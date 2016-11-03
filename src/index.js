@@ -80,6 +80,9 @@ function reject(list, predicate) {
     };
   });
   return rejectList;
+  // return rejectList = list.filter(function(value){
+  //   return !predicate(value);
+  // });
 }
 
 // tests
@@ -96,49 +99,45 @@ console.assert(odds[4] === 9)
 // // in a collection when the callback function returns true;
 // // otherwise returns undefined.
 // // -----------
-// function find(list, predicate) {
-//     // YOUR CODE HERE
-//   var results = [];
-//   results.length = 1;
-//   reduce(list, function (a, value, i, ogArray) {
-//     var resultOfPredicate = predicate(value, i, ogArray);
-//     console.log(resultOfPredicate);
-//     if (resultOfPredicate) {
-//       return results.push(value);
-//     };
-//   });
-//   return results;
-// }
-//
-// // tests
-// // ---
-// var people = [
-//     {name: "Matt", teaches: "JS"},
-//     {name: "Jwo", teaches: "Ruby"},
-//     {name: "Dorton", teaches: "life"}
-// ]
-// var JS = find(people, function(n){ return n.teaches === "JS" })
-// console.assert(JS.name === "Matt")
-//
+function find(list, predicate) {
+  return list.reduce(function(a, value){
+    var resultOfPredicate = predicate(value)
+    if (typeof a !== 'undefined') {
+      return a;
+    } else if (resultOfPredicate){
+      return value;
+    } else {
+      return a;
+    }
+  }, undefined);
+}
+
+var people = [
+    {name: "Sam", teaches: "JS"},
+    {name: "Matt", teaches: "JS"},
+    {name: "Jwo", teaches: "Ruby"},
+    {name: "Dorton", teaches: "life"}
+]
+var JS = find(people, function(n){ return n.teaches === "JS" })
+console.assert(JS.name === "Sam")
+
 // // -----------
 // // Write a function where() that filters for all the values
 // // in the properties object.
 // // -----------
 function where(list, properties) {
     // YOUR CODE HERE
-  var location = [];
-  function filter(list, callback) {
-      // YOUR CODE HERE
-    var filteredList = [];
-    reduce(list, function (a, value, i, ogArray) {
-      var resultOfCallback = callback(value, i, ogArray);
-      if (resultOfCallback) {
-        filteredList.push(value);
+  return list.filter(function(value){
+    var itemsPassed = true;
+    for (key in properties) {
+      if (properties.hasOwnProperty(key)) {
+        if (value[key] !== properties[key]) {
+          itemsPassed = false;
+        };
       };
-    });
-    return filteredList;
-  }
-  return location;
+    };
+    return itemsPassed;
+  });
 }
 
 // tests
@@ -153,16 +152,24 @@ var plays = [
     {title: "Two Blind Mice", author: "Samuel and Bella Spewack", year: 1949}
 ]
 
+//return an array of all 5 Shakespeare plays with Cymbeline is listed first
 var sh8spr = where(plays, {author: "Shakespeare"})
+console.log(sh8spr);
 console.assert(sh8spr instanceof Array)
 console.assert(sh8spr.length === 5)
 console.assert(sh8spr[0].title === "Cymbeline")
 
+//return array of Shakespeare plays written in 1611 (should be 0)
 sh8spr = where(plays, {author: "Shakespeare", year: 1611})
+console.log(sh8spr);
 console.assert(sh8spr.length === 0)
 
+//return array of Shakespeare plays written in 1623 (should be 2)
 sh8spr = where(plays, {author: "Shakespeare", year: 1623})
+console.log(sh8spr);
 console.assert(sh8spr.length === 2)
 
+//return an array of plays written in 1949 (should be 2)
 var midcentury = where(plays, {year: 1949})
+console.log(midcentury);
 console.assert(midcentury.length === 2)
