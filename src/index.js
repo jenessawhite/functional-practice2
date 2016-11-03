@@ -98,6 +98,16 @@ console.assert(odds[4] === 9)
 // // -----------
 // function find(list, predicate) {
 //     // YOUR CODE HERE
+//   var results = [];
+//   results.length = 1;
+//   reduce(list, function (a, value, i, ogArray) {
+//     var resultOfPredicate = predicate(value, i, ogArray);
+//     console.log(resultOfPredicate);
+//     if (resultOfPredicate) {
+//       return results.push(value);
+//     };
+//   });
+//   return results;
 // }
 //
 // // tests
@@ -114,32 +124,45 @@ console.assert(odds[4] === 9)
 // // Write a function where() that filters for all the values
 // // in the properties object.
 // // -----------
-// function where(list, properties) {
-//     // YOUR CODE HERE
-// }
-//
-// // tests
-// // ---
-// var plays = [
-//     {title: "Cymbeline", author: "Shakespeare", year: 1623},
-//     {title: "The Tempest", author: "Shakespeare", year: 1623},
-//     {title: "Hamlet", author: "Shakespeare", year: 1603},
-//     {title: "A Midsummer Night's Dream", author: "Shakespeare", year: 1600},
-//     {title: "Macbeth", author: "Shakespeare", year: 1620},
-//     {title: "Death of a Salesman", author: "Arthur Miller", year: 1949},
-//     {title: "Two Blind Mice", author: "Samuel and Bella Spewack", year: 1949}
-// ]
-//
-// var sh8spr = where(plays, {author: "Shakespeare"})
-// console.assert(sh8spr instanceof Array)
-// console.assert(sh8spr.length === 5)
-// console.assert(sh8spr[0].title === "Cymbeline")
-//
-// sh8spr = where(plays, {author: "Shakespeare", year: 1611})
-// console.assert(sh8spr.length === 0)
-//
-// sh8spr = where(plays, {author: "Shakespeare", year: 1623})
-// console.assert(sh8spr.length === 2)
-//
-// var midcentury = where(plays, {year: 1949})
-// console.assert(midcentury.length === 2)
+function where(list, properties) {
+    // YOUR CODE HERE
+  var location = [];
+  function filter(list, callback) {
+      // YOUR CODE HERE
+    var filteredList = [];
+    reduce(list, function (a, value, i, ogArray) {
+      var resultOfCallback = callback(value, i, ogArray);
+      if (resultOfCallback) {
+        filteredList.push(value);
+      };
+    });
+    return filteredList;
+  }
+  return location;
+}
+
+// tests
+// ---
+var plays = [
+    {title: "Cymbeline", author: "Shakespeare", year: 1623},
+    {title: "The Tempest", author: "Shakespeare", year: 1623},
+    {title: "Hamlet", author: "Shakespeare", year: 1603},
+    {title: "A Midsummer Night's Dream", author: "Shakespeare", year: 1600},
+    {title: "Macbeth", author: "Shakespeare", year: 1620},
+    {title: "Death of a Salesman", author: "Arthur Miller", year: 1949},
+    {title: "Two Blind Mice", author: "Samuel and Bella Spewack", year: 1949}
+]
+
+var sh8spr = where(plays, {author: "Shakespeare"})
+console.assert(sh8spr instanceof Array)
+console.assert(sh8spr.length === 5)
+console.assert(sh8spr[0].title === "Cymbeline")
+
+sh8spr = where(plays, {author: "Shakespeare", year: 1611})
+console.assert(sh8spr.length === 0)
+
+sh8spr = where(plays, {author: "Shakespeare", year: 1623})
+console.assert(sh8spr.length === 2)
+
+var midcentury = where(plays, {year: 1949})
+console.assert(midcentury.length === 2)
